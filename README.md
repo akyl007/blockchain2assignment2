@@ -18,8 +18,8 @@
 
 1. Клонируйте репозиторий:
 ```bash
-git clone https://github.com/akyl007/blockchain2assignment2.git
-cd blockchain2assignment2
+git clone https://github.com/yourusername/crypto-news-aggregator.git
+cd crypto-news-aggregator
 ```
 
 2. Создайте файл `.env` и добавьте ваши API-ключи:

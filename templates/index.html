@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Криптовалютный агрегатор новостей</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .search-container {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        input[type="text"] {
+            padding: 10px;
+            width: 300px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        .news-container {
+            display: grid;
+            gap: 20px;
+        }
+        .news-card {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .news-title {
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+        .news-meta {
+            color: #666;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+        }
+        .news-description {
+            margin-bottom: 10px;
+        }
+        .news-link {
+            color: #4CAF50;
+            text-decoration: none;
+        }
+        .loading {
+            display: none;
+            text-align: center;
+            margin: 20px 0;
+        }
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #4CAF50;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        .loading-text {
+            margin-top: 10px;
+            color: #666;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .error-message {
+            color: #ff4444;
+            text-align: center;
+            padding: 20px;
+            background-color: #ffeeee;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="search-container">
+        <h1>Криптовалютный агрегатор новостей</h1>
+        <input type="text" id="cryptoInput" placeholder="Введите название криптовалюты (например, BTC)">
+        <button onclick="searchNews()" id="searchButton">Поиск</button>
+    </div>
+    
+    <div class="loading" id="loading">
+        <div class="loading-spinner"></div>
+        <div class="loading-text">Загрузка новостей...</div>
+    </div>
+    
+    <div id="newsContainer" class="news-container"></div>
+
+    <script>
+        async function searchNews() {
+            const crypto = document.getElementById('cryptoInput').value;
+            if (!crypto) return;
+
+            const searchButton = document.getElementById('searchButton');
+            const loading = document.getElementById('loading');
+            const container = document.getElementById('newsContainer');
+            
+            // Очищаем предыдущие результаты
+            container.innerHTML = '';
+            
+            // Показываем анимацию загрузки
+            loading.style.display = 'block';
+            searchButton.disabled = true;
+
+            try {
+                const response = await fetch(`/search/${crypto}`);
+                const data = await response.json();
+                
+                // Скрываем анимацию загрузки
+                loading.style.display = 'none';
+                searchButton.disabled = false;
+
+                if (data.error) {
+                    container.innerHTML = `
+                        <div class="error-message">
+                            Ошибка: ${data.error}
+                        </div>
+                    `;
+                    return;
+                }
+
+                if (data.articles.length === 0) {
+                    container.innerHTML = `
+                        <div class="news-card">
+                            Новости не найдены. Попробуйте другой запрос.
+                        </div>
+                    `;
+                    return;
+                }
+
+                data.articles.forEach(article => {
+                    const card = document.createElement('div');
+                    card.className = 'news-card';
+                    card.innerHTML = `
+                        <div class="news-title">${article.title}</div>
+                        <div class="news-meta">
+                            ${article.source} • ${new Date(article.published_at).toLocaleString()}
+                        </div>
+                        <div class="news-description">${article.description}</div>
+                        <a href="${article.url}" class="news-link" target="_blank">Читать далее</a>
+                    `;
+                    container.appendChild(card);
+                });
+            } catch (error) {
+                loading.style.display = 'none';
+                searchButton.disabled = false;
+                container.innerHTML = `
+                    <div class="error-message">
+                        Произошла ошибка при загрузке новостей. Пожалуйста, попробуйте позже.
+                    </div>
+                `;
+                console.error('Ошибка:', error);
+            }
+        }
+
+        // Добавляем обработчик нажатия Enter в поле ввода
+        document.getElementById('cryptoInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                searchNews();
+            }
+        });
+    </script>
+</body>
+</html> 
