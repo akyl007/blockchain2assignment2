@@ -13,7 +13,8 @@ A web application in Rust for aggregating cryptocurrency news from various sourc
 - Modern and responsive web interface
 - Error handling and API rate limits
 
-![Image1: Main Menu](image1)
+![image](https://github.com/user-attachments/assets/e4008047-af4f-4bdd-9d63-46fd4db2701c)
+
 
 ## Requirements
 
@@ -54,13 +55,15 @@ The application will be available at: http://localhost:3030
 3. Click the "Search" button
 4. Browse the aggregated news from various sources
 
-![Image2: Search by Key](изображение2)
+![image](https://github.com/user-attachments/assets/1a705e6f-24bc-47d1-b22e-4eb445c4aadd)
+
 
 ## License
 
 MIT License
 
-![Image3: Structure of an Article](изображение3)
+![image](https://github.com/user-attachments/assets/b98f89ed-0209-4c6a-9b4f-d706bcbd858d)
+
 
 --- 
 
