@@ -1,17 +1,15 @@
-#!/bin/bash
-
 # Устанавливаем devnet
 solana config set --url devnet
 
 # Собираем программу
-cd solana
+Set-Location solana
 cargo build-bpf
 
 # Деплоим программу
 solana program deploy target/deploy/solana_hello_world.so
 
 # Выводим информацию о кошельке и программе
-echo "Wallet address:"
+Write-Host "Wallet address:"
 solana address
-echo "Program ID:"
+Write-Host "Program ID:"
 solana program show --programs 
