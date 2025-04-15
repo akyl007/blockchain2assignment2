@@ -2,7 +2,7 @@
 name = "crypto-news-aggregator"
 version = "0.1.0"
 edition = "2021"
-authors = ["Your Name <your.email@example.com>"]
+authors = ["Akylbek <abzaluly.aqylbek@mail.ru>"]
 description = "Агрегатор новостей о криптовалютах"
 
 [dependencies]

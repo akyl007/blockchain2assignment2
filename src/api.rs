@@ -21,12 +21,12 @@ impl NewsFetcher {
     pub async fn fetch_news(&self, crypto_symbol: &str) -> Result<NewsResponse, Box<dyn Error>> {
         let mut articles = Vec::new();
         
-        // Запрос к CryptoNews API
+        // CryptoNews API
         if let Ok(crypto_news) = self.fetch_crypto_news(crypto_symbol).await {
             articles.extend(crypto_news);
         }
         
-        // Запрос к CoinGecko API
+        // CoinGecko API
         if let Ok(coin_gecko_news) = self.fetch_coin_gecko_news(crypto_symbol).await {
             articles.extend(coin_gecko_news);
         }
@@ -36,7 +36,7 @@ impl NewsFetcher {
             error: None,
         })
     }
-
+    
     async fn fetch_crypto_news(&self, crypto_symbol: &str) -> Result<Vec<NewsArticle>, Box<dyn Error>> {
         let url = format!(
             "https://min-api.cryptocompare.com/data/v2/news/?lang=EN&categories={}",
