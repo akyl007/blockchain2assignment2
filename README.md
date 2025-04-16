@@ -19,6 +19,9 @@ bumpalo = "3.12.0"
 arrayref = "0.3.6"
 thiserror = "1.0"
 ```
+
+![image](https://github.com/user-attachments/assets/0c7d5229-3d72-4c69-9303-07903d7c8a70)
+
 ![image](https://github.com/user-attachments/assets/443e76be-342d-4365-a296-a97a0dd98ef3)
 
 ![image](https://github.com/user-attachments/assets/449442bc-37f5-482f-8a64-7ce5d800f87d)
