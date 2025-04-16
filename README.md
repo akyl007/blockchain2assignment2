@@ -1,16 +1,17 @@
 # Solana Hello World Program
 
-Простой пример программы на Solana, демонстрирующий работу со счетчиком.
+A simple Solana program demonstrating counter functionality.
 
-## Технологический стек
+## Technology Stack
 
-### Основные технологии
+### Core Technologies
 - **Solana**: v1.17.15
 - **Rust**: v1.72.0
 - **Docker**: Ubuntu 22.04
-- **BPF (Berkeley Packet Filter)**: Для выполнения программ на Solana
+- **BPF (Berkeley Packet Filter)**: For Solana program execution
+- **Web3.js**: For client-side interaction
 
-### Зависимости проекта
+### Project Dependencies
 ```toml
 [dependencies]
 solana-program = "1.17.15"
@@ -19,152 +20,226 @@ arrayref = "0.3.6"
 thiserror = "1.0"
 ```
 
-## Требования к окружению
+image.png
 
-### Системные требования
-- Docker Desktop для Windows
+## Environment Requirements
+
+### System Requirements
+- Docker Desktop for Windows
 - Git
-- Минимум 4GB RAM
-- 20GB свободного места на диске
+- Minimum 4GB RAM
+- 20GB free disk space
 
-### Версии инструментов
-- Docker: последняя стабильная версия
+### Tool Versions
+- Docker: Latest stable version
 - Solana CLI: v1.17.15
 - Rust: v1.72.0
-- Ubuntu: 22.04 (в контейнере)
+- Ubuntu: 22.04 (in container)
 
-## Установка и настройка
+## Installation and Setup
 
-### 1. Клонирование репозитория
+### 1. Clone Repository
 ```bash
 git clone <repository-url>
 cd solana-hello-world
 ```
 
-### 2. Запуск Docker контейнера
+### 2. Start Docker Container
 ```bash
 docker-compose up -d
 ```
 
-### 3. Вход в контейнер
+### 3. Enter Container
 ```bash
 docker exec -it solana_dev bash
 ```
 
-## Структура проекта
+## Project Structure
 
 ```
 solana-hello-world/
-├── Dockerfile              # Конфигурация Docker образа
-├── docker-compose.yml      # Конфигурация Docker Compose
-├── solana/                 # Исходный код программы
-│   ├── Cargo.toml         # Зависимости Rust
-│   ├── Cargo.lock         # Версии зависимостей
+├── Dockerfile              # Docker image configuration
+├── docker-compose.yml      # Docker Compose configuration
+├── solana/                 # Program source code
+│   ├── Cargo.toml         # Rust dependencies
+│   ├── Cargo.lock         # Dependency versions
 │   └── src/
-│       └── lib.rs         # Основной код программы
-├── scripts/               # Скрипты для работы с проектом
-│   ├── build.sh          # Скрипт сборки
-│   ├── deploy.sh         # Скрипт деплоя
-│   └── create_wallet.sh  # Скрипт создания кошелька
-└── README.md             # Документация
+│       └── lib.rs         # Main program code
+├── scripts/               # Project scripts
+│   ├── build.sh          # Build script
+│   ├── deploy.sh         # Deploy script
+│   └── create_wallet.sh  # Wallet creation script
+└── README.md             # Documentation
 ```
 
-## Разработка
+## Development
 
-### Сборка проекта
+### Building the Project
 ```bash
 cd /project/solana
 cargo build-bpf
 ```
 
-### Деплой на devnet
+### Deploying to Devnet
 ```bash
 solana config set --url devnet
 solana program deploy target/deploy/solana_hello_world.so
 ```
 
-### Проверка версий
+### Checking Versions
 ```bash
 solana --version
 cargo --version
 rustc --version
 ```
 
-## Архитектура программы
+## Web3.js Integration
 
-### Основные компоненты
-1. **Counter**: Структура данных для хранения счетчика
-   - `is_initialized`: Флаг инициализации
-   - `count`: Значение счетчика
+### Client-Side Setup
+```javascript
+import { Connection, PublicKey, Transaction } from '@solana/web3.js';
 
-2. **Process Instruction**: Точка входа программы
-   - Проверка владельца аккаунта
-   - Проверка подписи
-   - Инкрементация счетчика
+// Connect to devnet
+const connection = new Connection('https://api.devnet.solana.com');
 
-### Безопасность
-- Проверка владельца программы
-- Проверка подписи транзакции
-- Обработка переполнения счетчика
+// Program ID (replace with your deployed program ID)
+const programId = new PublicKey('YOUR_PROGRAM_ID');
 
-## Тестирование
+// Create transaction
+const transaction = new Transaction().add(
+    // Add your instruction here
+);
 
-### Локальное тестирование
+// Sign and send transaction
+const signature = await connection.sendTransaction(transaction, [payer]);
+```
+
+### Example Usage
+```javascript
+// Initialize counter
+const initCounter = async () => {
+    const transaction = new Transaction().add(
+        // Add initialization instruction
+    );
+    await connection.sendTransaction(transaction, [payer]);
+};
+
+// Increment counter
+const incrementCounter = async () => {
+    const transaction = new Transaction().add(
+        // Add increment instruction
+    );
+    await connection.sendTransaction(transaction, [payer]);
+};
+```
+
+## Live Demo Instructions
+
+### Prerequisites
+1. Docker Desktop running
+2. Solana CLI installed
+3. Sufficient SOL on devnet
+
+### Demo Steps
+1. **Show Environment Setup**
+   ```bash
+   solana --version
+   solana config get
+   ```
+
+2. **Deploy Program**
+   ```bash
+   # Build program
+   cargo build-bpf
+   
+   # Deploy to devnet
+   solana program deploy target/deploy/solana_hello_world.so
+   ```
+
+3. **Interact with Program**
+   ```bash
+   # Show wallet address
+   solana address
+   
+   # Check balance
+   solana balance
+   
+   # Show program logs
+   solana logs <PROGRAM_ID>
+   ```
+
+4. **Web3.js Demo**
+   ```bash
+   # Start client application
+   npm start
+   
+   # Show counter initialization
+   # Show counter increment
+   # Show transaction history
+   ```
+
+### Screenshots to Capture
+1. Solana CLI version
+2. Wallet address
+3. Program deployment success
+4. Transaction history
+5. Counter state changes
+
+## Program Architecture
+
+### Main Components
+1. **Counter**: Data structure for storing counter
+   - `is_initialized`: Initialization flag
+   - `count`: Counter value
+
+2. **Process Instruction**: Program entry point
+   - Account owner verification
+   - Signature verification
+   - Counter increment
+
+### Security
+- Program owner verification
+- Transaction signature verification
+- Counter overflow handling
+
+## Testing
+
+### Local Testing
 ```bash
 cargo test
 ```
 
-### Тестирование на devnet
-1. Деплой программы
-2. Создание тестовых транзакций
-3. Проверка состояния счетчика
+### Devnet Testing
+1. Deploy program
+2. Create test transactions
+3. Verify counter state
 
-## Демонстрация
+## Troubleshooting
 
-[Здесь будут скриншоты после деплоя]
+### Common Issues
+1. **BPF Build Error**
+   - Check Rust version
+   - Verify all dependencies
 
-## Примеры использования
+2. **Deploy Error**
+   - Check wallet balance
+   - Verify devnet configuration
 
-### Инициализация счетчика
-```rust
-let mut counter = Counter::unpack_unchecked(&counter_account.data.borrow())?;
-if !counter.is_initialized {
-    counter.is_initialized = true;
-    counter.count = 0;
-}
-```
+3. **Execution Errors**
+   - Check permissions
+   - Verify data structure
 
-### Инкрементация счетчика
-```rust
-counter.count = counter.count.checked_add(1).ok_or(ProgramError::Overflow)?;
-```
-
-## Устранение неполадок
-
-### Частые проблемы
-1. **Ошибка сборки BPF**
-   - Проверьте версию Rust
-   - Убедитесь в наличии всех зависимостей
-
-2. **Ошибка деплоя**
-   - Проверьте баланс кошелька
-   - Убедитесь в правильности конфигурации devnet
-
-3. **Ошибки выполнения**
-   - Проверьте права доступа
-   - Убедитесь в правильности структуры данных
-
-## Лицензия
+## License
 
 MIT License
 
-## Контакты
+## Contact
 
-[Здесь контактная информация]
+[Contact information here]
 
-## История изменений
+## Changelog
 
 ### v1.0.0
-- Первоначальный релиз
-- Базовая функциональность счетчика
-- Поддержка Docker 
+- Initial release
+- Basic counter functionality
+- Docker support 
